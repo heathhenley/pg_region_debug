@@ -37,7 +37,7 @@ def main():
 
     print("--------------------------------")
     try:
-        print("Connecting to database with psycopg...")
+        print("Connecting to database with psycopg3...")
         creds['dbname'] = creds.pop('database')
         with psycopg.connect(
             **creds
