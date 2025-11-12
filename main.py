@@ -3,7 +3,7 @@ import psycopg2
 creds = {
     'host': 'localhost',
     'database': 'this_does_not_exist',
-    #'database': 'this_does_not_exist',
+    #'database': 'postgres',
     'user': 'postgres',
     'password': 'postgres'
 }
@@ -22,6 +22,8 @@ def main():
                 cursor.execute('SELECT 1') # just to do something
                 #cursor.execute('SELECT * FROM table_that_does_not_exist LIMIT 1') # trigger error message   
                 print(cursor.fetchone())
+    except psycopg2.OperationalError:
+        print("OK: Expected error -  does not exist")
     except Exception:
         print("Failed to connect to database")
         import traceback
