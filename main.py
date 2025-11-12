@@ -1,4 +1,6 @@
 import psycopg2
+import psycopg
+
 
 creds = {
     'host': 'localhost',
@@ -14,6 +16,7 @@ creds = {
 def main():
     # dummy database on localhost
     try:
+        print("Connecting to database with psycopg2...")
         with psycopg2.connect(
             **creds
         )as conn:
@@ -24,12 +27,35 @@ def main():
                 print(cursor.fetchone())
     except psycopg2.OperationalError:
         print("OK: Expected error -  does not exist")
+    except UnicodeDecodeError:
+        print("FAIL: Expected error - UnicodeDecodeError")
     except Exception:
-        print("Failed to connect to database")
+        print("FAIL: Other unexpected error:")
         import traceback
         traceback.print_exc()
         return
 
+    print("--------------------------------")
+    try:
+        print("Connecting to database with psycopg...")
+        creds['dbname'] = creds.pop('database')
+        with psycopg.connect(
+            **creds
+        )as conn:
+            print("Connected to database!")
+            with conn.cursor() as cursor:
+                cursor.execute('SELECT 1') # just to do something
+                #cursor.execute('SELECT * FROM table_that_does_not_exist LIMIT 1') # trigger error message   
+                print(cursor.fetchone())
+    except psycopg.OperationalError:
+        print("OK: Expected error -  does not exist")
+    except UnicodeDecodeError:
+        print("FAIL: Expected error - UnicodeDecodeError")
+    except Exception:
+        print("FAIL: Other unexpected error:")
+        import traceback
+        traceback.print_exc()
+        return
 
 if __name__ == "__main__":
     main()
