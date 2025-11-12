@@ -5,11 +5,11 @@ creds = {
     'database': 'this_does_not_exist',
     #'database': 'postgres',
     'user': 'postgres',
-    'password': 'postgres'
+    'password': 'postgres',
+    #'client_encoding': 'WIN1252',
+    #'client_encoding': 'CP1252',
+    #'client_encoding': 'UNICODE',
 }
-
-def to_url(creds):
-    return f"postgresql://{creds['user']}:{creds['password']}@{creds['host']}/{creds['database']}"
 
 def main():
     # dummy database on localhost
